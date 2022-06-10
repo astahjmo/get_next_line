@@ -1,4 +1,3 @@
 main.c
-teste2.txtnteste.tx
-teste2.txt
-teste.txt
+*.txt
+*.out

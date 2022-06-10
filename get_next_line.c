@@ -6,55 +6,60 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:19:24 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/08 17:40:42 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/10 20:36:01 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*handler_line(char *cache, int fd)
+char	*ft_req(char *cache, char *buffer)
+{
+	char	*new_cache;
+
+	new_cache = ft_strjoin(cache, buffer);
+	free(cache);
+	return (new_cache);
+}
+
+char	*handler_cache(int fd, char *cache)
 {
 	char	buffer[BUFFER_SIZE + 1];
-	int		b_read;
+	size_t	b_readed;
 
-	b_read = 1;
+	b_readed = 1;
 	if (!cache)
-		cache = malloc(BUFFER_SIZE + 1);
-	if (!cache)
-		return (NULL);
-	while (!ft_strchr(cache, '\n') && b_read != 0)
+		cache = (char *)malloc(BUFFER_SIZE + 1);
+	while (ft_strchr(buffer, '\n') && b_readed != 0)
 	{
-		b_read = read(fd, buffer, BUFFER_SIZE);
-		cache = ft_strjoin(cache, buffer);
+		b_readed = read(fd, buffer, BUFFER_SIZE);
+		cache = ft_req(cache, buffer);
 	}
 	return (cache);
 }
 
-char *get_line(char *cache)
+char	*get_line(char *buffer, char *line)
 {
 	int	count;
-	char *line;
 
-	count = 2;
-	while (cache[count] != '\n')
+	count = 0;
+	while (buffer[count] != '\n' && buffer[count])
 		count++;
-	line = malloc(count * sizeof(char));
-	if (!line)
-		return (NULL);
-	ft_memcpy(line, cache, count);
-	ft_memcpy(cache, cache + count + 1, ft_strlen(cache));
+	line = (char *) malloc(count + 2);
+	line[count +1] = '\0';
+	ft_memcpy(line, buffer, count + 1);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*cache;
-	char		*line;
+	static char		*cache;
+	char			*line;
 
+	line = NULL;
 	if (fd < 0)
 		return (NULL);
-	
-	cache = handler_line(cache, fd);
-	line = get_line(cache);
+	if (!cache)
+		cache = handler_cache(fd, cache);
+	line = get_line(cache, line);
 	return (line);
 }

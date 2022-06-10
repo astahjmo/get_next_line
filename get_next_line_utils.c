@@ -6,22 +6,22 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:06:47 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/08 17:39:14 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/10 20:39:17 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t ft_strlen(const char *src)
+size_t	ft_strlen(const char *src)
 {
-  int count;
+	int	count;
 
-  if (!src)
-	  return (0);
-  count = 0;
-  while(src[count])
-    count++;
-  return (count);
+	if (!src)
+		return (0);
+	count = 0;
+	while (src[count])
+		count++;
+	return (count);
 }
 
 char	*ft_strchr(char *src, int c)
@@ -60,12 +60,11 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t	dstt;
 	size_t	srcc;
-    size_t src_count;
+	size_t	src_count;
 
 	dstt = 0;
 	srcc = 0;
 	src_count = 0;
-
 	while (src[src_count])
 			src_count++;
 	while (dst[dstt] && dstt < size)

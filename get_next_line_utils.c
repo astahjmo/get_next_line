@@ -6,7 +6,7 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:06:47 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/10 20:39:17 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/10 22:21:12 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*ft_strchr(char *src, int c)
 {
 	int		count;
 
+	if (!src)
+	  return (0);
 	count = 0;
 	while (src[count])
 	{
@@ -82,8 +84,12 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*str;
+	size_t	count;
 
+	count = 0;
 	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	while (ft_strlen(s1) + ft_strlen(s2) + 1 >= count)
+		str[count++] = '\0';
 	if (!str)
 		return (NULL);
 	ft_strlcat(str, s1, ft_strlen(s1) +1);

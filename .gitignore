@@ -2,3 +2,4 @@ main.c
 *.txt
 *.out
 vgcore.*
+gnlTester/

@@ -6,93 +6,75 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:06:47 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/10 22:21:12 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/14 09:39:01 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *src)
+int	ft_strlen(char *str)
 {
 	int	count;
 
-	if (!src)
-		return (0);
 	count = 0;
-	while (src[count])
+	if (!str)
+		return (0);
+	while (str[count])
 		count++;
 	return (count);
 }
 
-char	*ft_strchr(char *src, int c)
+char	*ft_new_buffer(char *s1, char *s2)
 {
-	int		count;
+	size_t	str_size;
+	char	*new_str;
+	size_t	count;
+	size_t	aux;
 
-	if (!src)
-	  return (0);
+	aux = 0;
 	count = 0;
-	while (src[count])
+	str_size = ft_strlen(s1) + ft_strlen(s2);
+	if (!s1 && !s2)
+		return (NULL);
+	new_str = ft_alloc(str_size + 1, sizeof(char));
+	while (s1[count])
 	{
-		if (src[count] == (char)c)
-		{
-			return ((char *)&src[count]);
-		}
+		new_str[count] = s1[count];
 		count++;
 	}
-	return (NULL);
-}
-
-void	*ft_memcpy(void *dest, const void *src, size_t n)
-{
-	size_t				count;
-	unsigned char		*d;
-	const unsigned char	*s;
-
-	if (!(dest || src))
-		return (NULL);
-	d = (unsigned char *) dest;
-	s = (const unsigned char *) src;
-	count = -1;
-	while (++count < n)
-		d[count] = s[count];
-	return (dest);
-}
-
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
-{
-	size_t	dstt;
-	size_t	srcc;
-	size_t	src_count;
-
-	dstt = 0;
-	srcc = 0;
-	src_count = 0;
-	while (src[src_count])
-			src_count++;
-	while (dst[dstt] && dstt < size)
-		dstt++;
-	while (src[srcc] && (dstt + srcc + 1) < size)
+	while (s2[aux])
 	{
-		dst[dstt + srcc] = src[srcc];
-		srcc++;
+		new_str[count] = s2[aux];
+		aux++;
+		count++;
 	}
-	if (dstt != size)
-		dst[dstt + srcc] = 0;
-	return (dstt + src_count);
+	new_str[count] = '\0';
+	return (new_str);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_alloc(size_t mem, size_t size)
 {
-	char	*str;
+	char	*buffer;
 	size_t	count;
 
 	count = 0;
-	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	while (ft_strlen(s1) + ft_strlen(s2) + 1 >= count)
-		str[count++] = '\0';
-	if (!str)
+	if ((mem * size / size != mem))
 		return (NULL);
-	ft_strlcat(str, s1, ft_strlen(s1) +1);
-	ft_strlcat(str, s2, ft_strlen(s1) + ft_strlen(s2) + 1);
-	return (str);
+	buffer = malloc(mem * size);
+	while (count < ((mem * size) / size))
+	{
+		buffer[count] = '\0';
+		count++;
+	}
+	return (buffer);
+}
+
+char	*ft_strchr(char *str, int find)
+{
+	while (*str++)
+	{
+		if (*str == find)
+			return (&(*str));
+	}
+	return (NULL);
 }

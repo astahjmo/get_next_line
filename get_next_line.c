@@ -6,71 +6,72 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:19:24 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/10 22:33:17 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/14 10:26:03 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <unistd.h>
 
-char	*ft_req(char *cache, char *buffer)
+char	*get_line(char *buffer)
 {
-	char	*new_cache;
+	char	*line;
+	size_t	count;
+	size_t	cpy;
 
-	new_cache = ft_strjoin(cache, buffer);
-	if (*cache)
-		free(cache);
-	cache = NULL;
-	return (new_cache);
-}
-
-char	*handler_cache(int fd, char *cache)
-{
-	char	buffer[BUFFER_SIZE + 1];
-	size_t	b_readed;	
-
-	b_readed = 1;
-	while (!ft_strchr(buffer, '\n') && b_readed != 0)
-	{
-		b_readed = read(fd, buffer, BUFFER_SIZE);
-		cache = ft_req(cache, buffer);
-	}
-	return (cache);
-}
-
-char	*get_line(char *buffer, char *line)
-{
-	int	count;
-
+	cpy = -1;
 	count = 0;
 	while (buffer[count] != '\n' && buffer[count])
 		count++;
-	line = (char *) malloc(count + 2);
-	line[count++] = '\0';
-	ft_memcpy(line, buffer, count);
-	ft_memcpy(buffer, buffer + count, count);
+	line = ft_alloc(count + 2, sizeof(char));
+	while (++cpy <= count)
+		line[cpy] = buffer[cpy];
+	line[cpy] = '\0';
+	cpy = 0;
+	count++;
+	while (buffer[count])
+	{
+		buffer[cpy] = buffer[count];
+		cpy++;
+		count++;
+	}
+	buffer[cpy] = '\0';
 	return (line);
+}
+
+char	*ft_handler_buffer(char *buffer, int fd)
+{
+	char	read_buff[BUFFER_SIZE + 1];
+	int		status;
+	char	*temp;
+
+	status = read(fd, read_buff, BUFFER_SIZE);
+	if (status < 1)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	read_buff[BUFFER_SIZE] = '\0';
+	temp = ft_new_buffer(buffer, read_buff);
+	free (buffer);
+	buffer = temp;
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*cache;
-	char			*line;
-	int				count;
-	
-	count = 0;
+	static char	*buffer;
+	char		*line;
+
 	line = NULL;
-	if (fd < 0)
+	if (fd < 0 || fd > MAX_FD || BUFFER_SIZE < 1)
 		return (NULL);
-	if (!cache)
-	{
-		cache = (char *)malloc(BUFFER_SIZE + 1);
-		if (!cache)
-			return (NULL);
-		while (count++ < BUFFER_SIZE)
-			cache[count] = '\0';
-	}
-	else
-		cache = handler_cache(fd, cache);
-	line = get_line(cache, line);
+	if (!buffer)
+		buffer = ft_alloc(BUFFER_SIZE, sizeof(char));
+	while (buffer != NULL && !ft_strchr(buffer, '\n'))
+		buffer = ft_handler_buffer(buffer, fd);
+	if (buffer == NULL)
+		return (NULL);
+	line = get_line(buffer);
 	return (line);
 }

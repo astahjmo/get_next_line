@@ -6,7 +6,7 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:19:28 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/08 16:02:55 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/14 10:16:45 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+# define MAX_FD 1024
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif
 
 char	*get_next_line(int fd);
-void	*ft_strncopy(char *dest, const char *src, size_t n);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlen(const char *src);
-size_t	ft_strlcat(char *dst, const char *src, size_t size);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-char	*ft_strchr(char *src, int c);
+char	*ft_strchr(char *str, int find);
+char	*ft_strlcat(char *s1, char *s2);
+int		ft_strlen(char *str);
+char	*ft_alloc(size_t mem, size_t size);
+char	*ft_new_buffer(char *s1, char *s2);
 #endif

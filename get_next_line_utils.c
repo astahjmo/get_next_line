@@ -6,7 +6,7 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:06:47 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/14 09:39:01 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/14 13:08:59 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,14 @@ char	*ft_alloc(size_t mem, size_t size)
 
 char	*ft_strchr(char *str, int find)
 {
-	while (*str++)
+	size_t	count;
+
+	count = 0;
+	while (str[count])
 	{
-		if (*str == find)
-			return (&(*str));
+		if (str[count] == find)
+			return (&str[count]);
+		count++;
 	}
 	return (NULL);
 }

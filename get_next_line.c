@@ -6,7 +6,7 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:19:24 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/14 10:26:03 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/15 20:11:44 by astaroth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,17 @@ char	*ft_handler_buffer(char *buffer, int fd)
 	int		status;
 	char	*temp;
 
-	status = read(fd, read_buff, BUFFER_SIZE);
-	if (status < 1)
+	status = BUFFER_SIZE;
+	while (!ft_strchr(buffer, '\n') && status == BUFFER_SIZE)
 	{
-		free(buffer);
-		return (NULL);
+		status = read(fd, read_buff, BUFFER_SIZE);
+		read_buff[status] = '\0';
+		if (status < 0)
+			return (NULL);
+		temp = ft_new_buffer(buffer, read_buff);
+		free (buffer);
+		buffer = temp;
 	}
-	read_buff[BUFFER_SIZE] = '\0';
-	temp = ft_new_buffer(buffer, read_buff);
-	free (buffer);
-	buffer = temp;
 	return (buffer);
 }
 
@@ -68,10 +69,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (!buffer)
 		buffer = ft_alloc(BUFFER_SIZE, sizeof(char));
-	while (buffer != NULL && !ft_strchr(buffer, '\n'))
+	if ((buffer != NULL || !ft_strchr(buffer, '\n')))
+	{
 		buffer = ft_handler_buffer(buffer, fd);
-	if (buffer == NULL)
-		return (NULL);
+	}
+	if (!ft_strlen(buffer))
+		return (line);
 	line = get_line(buffer);
 	return (line);
 }

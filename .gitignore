@@ -4,6 +4,8 @@ main.c
 vgcore.*
 gnlTester/
 41_no_nl
+41_with_nl
+empty
 a
 nl
 42TESTERS-GNL

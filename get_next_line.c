@@ -6,7 +6,7 @@
 /*   By: astaroth </var/spool/mail/astaroth>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:25:41 by astaroth          #+#    #+#             */
-/*   Updated: 2022/06/20 16:01:53 by astaroth         ###   ########.fr       */
+/*   Updated: 2022/06/20 17:44:23 by astaroth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,21 @@ char    *shift_left(char *buffer)
 
 	shift = 0;
 	count = -1;
+	if (!buffer)
+		return (NULL);
 	if (!*buffer)
 	{
 		free (buffer);
 		buffer = NULL;
 		return (buffer);
 	}
-	while (buffer[shift] != '\n')
+	while (buffer[shift] && buffer[shift] != '\n')
 		shift++;
-	new_buffer = malloc(ft_strlen(buffer));
-	while (buffer[++shift])
-		new_buffer[++count] = buffer[shift];
+	new_buffer = malloc(ft_strlen(buffer) + 1);
+	if (!new_buffer)
+		return (NULL);
+	while (buffer[shift])
+		new_buffer[++count] = buffer[++shift];
 	new_buffer[++count] = '\0';
 	free (buffer);
 	buffer = NULL;
@@ -49,14 +53,19 @@ char	*get_linex(char *buffer)
 	count = 0;
 	if (!buffer)
 		return (NULL);
+	if (!*buffer)
+		return (NULL);
 	while (buffer[shleft] && buffer[shleft] != '\n')
 		shleft++;
-	line = ft_alloc(shleft + 2, sizeof(char));
+	line = malloc(shleft + 2 * sizeof(char));
+	if (!line)
+		return (NULL);
 	while (count <= shleft)
 	{
 		line[count] = buffer[count];
 		count++;
 	}
+	line[count] = '\0';
 	return (line);
 }
 
@@ -67,7 +76,7 @@ char	*buffer_handler(char *buffer, int fd)
 	int		r_bytes;
 
 	r_bytes = 1;
-	temp = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
+	temp = malloc(BUFFER_SIZE + 1 * sizeof(char));
 	if (!temp)
 		return (NULL);
 	while (!ft_strchr(buffer, '\n') && r_bytes != 0)
@@ -98,5 +107,11 @@ char	*get_next_line(int fd)
 	buffer[fd] = buffer_handler(buffer[fd], fd);
 	line = get_linex(buffer[fd]);
 	buffer[fd] = shift_left(buffer[fd]);
+	if (!buffer[fd])
+	{
+		free (buffer[fd]);
+		buffer[fd] = NULL;
+		return (buffer[fd]);
+	}
 	return (line);
 }

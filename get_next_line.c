@@ -6,25 +6,37 @@
 /*   By: astaroth </var/spool/mail/astaroth>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 17:25:41 by astaroth          #+#    #+#             */
-/*   Updated: 2022/06/18 14:39:13 by astaroth         ###   ########.fr       */
+/*   Updated: 2022/06/20 16:01:53 by astaroth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <unistd.h>
 
-void	shift_left(char *buffer, int shift)
+char    *shift_left(char *buffer)
 {
-	size_t	count;
+	size_t    count;
+	size_t     shift;
+	char     *new_buffer;
 
+
+	shift = 0;
 	count = -1;
-	if (!buffer)
-		return ;
-	if (buffer[shift] == '\0')
-		return ;
+	if (!*buffer)
+	{
+		free (buffer);
+		buffer = NULL;
+		return (buffer);
+	}
+	while (buffer[shift] != '\n')
+		shift++;
+	new_buffer = malloc(ft_strlen(buffer));
 	while (buffer[++shift])
-		buffer[++count] = buffer[shift];
-	buffer[++count] = '\0';
+		new_buffer[++count] = buffer[shift];
+	new_buffer[++count] = '\0';
+	free (buffer);
+	buffer = NULL;
+	return (new_buffer);
 }
 
 char	*get_linex(char *buffer)
@@ -39,15 +51,12 @@ char	*get_linex(char *buffer)
 		return (NULL);
 	while (buffer[shleft] && buffer[shleft] != '\n')
 		shleft++;
-	if (shleft == 0)
-		return (NULL);
 	line = ft_alloc(shleft + 2, sizeof(char));
 	while (count <= shleft)
 	{
 		line[count] = buffer[count];
 		count++;
 	}
-	shift_left(buffer, shleft);
 	return (line);
 }
 
@@ -57,21 +66,17 @@ char	*buffer_handler(char *buffer, int fd)
 	char	*switch_aux;
 	int		r_bytes;
 
-	r_bytes = BUFFER_SIZE;
-	temp = (char *)malloc(BUFFER_SIZE + 1);
-	while (((!ft_strchr(buffer, '\n')) && (r_bytes != 0 
-					|| !(r_bytes < BUFFER_SIZE))))
+	r_bytes = 1;
+	temp = (char *)malloc(BUFFER_SIZE + 1 * sizeof(char));
+	if (!temp)
+		return (NULL);
+	while (!ft_strchr(buffer, '\n') && r_bytes != 0)
 	{
 		r_bytes = read(fd, temp, BUFFER_SIZE);
-		if (r_bytes == -1)
+		if (r_bytes < 0)
 		{
 			free (temp);
 			return (NULL);
-		}
-		if (r_bytes == 0)
-		{
-			free (temp);
-			return (buffer);
 		}
 		temp[r_bytes] = '\0';
 		switch_aux = ft_new_buffer(buffer, temp);
@@ -79,8 +84,7 @@ char	*buffer_handler(char *buffer, int fd)
 		buffer = switch_aux;
 	}
 	free (temp);
-
-	return (switch_aux);
+	return (buffer);
 }
 
 char	*get_next_line(int fd)
@@ -91,16 +95,8 @@ char	*get_next_line(int fd)
 	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > MAX_FD)
 		return (NULL);
-	if (!buffer[fd])
-		buffer[fd] = ft_alloc(BUFFER_SIZE + 1, sizeof(char));
 	buffer[fd] = buffer_handler(buffer[fd], fd);
-	if (!buffer[fd])
-		return (NULL);
 	line = get_linex(buffer[fd]);
-	if (!line)
-	{
-		free(buffer[fd]);
-		buffer[fd] = NULL;
-	}
+	buffer[fd] = shift_left(buffer[fd]);
 	return (line);
 }

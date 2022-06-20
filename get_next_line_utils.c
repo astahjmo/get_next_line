@@ -6,7 +6,7 @@
 /*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/30 21:06:47 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/14 13:08:59 by johmatos         ###   ########.fr       */
+/*   Updated: 2022/06/18 18:14:27 by astaroth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,13 @@ char	*ft_new_buffer(char *s1, char *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	new_str = ft_alloc(str_size + 1, sizeof(char));
-	while (s1[count])
+
+	while (s1 && s1[count])
 	{
 		new_str[count] = s1[count];
 		count++;
 	}
-	while (s2[aux])
+	while (s2 && s2[aux])
 	{
 		new_str[count] = s2[aux];
 		aux++;
@@ -74,6 +75,8 @@ char	*ft_strchr(char *str, int find)
 	size_t	count;
 
 	count = 0;
+	if (!str)
+		return (0);
 	while (str[count])
 	{
 		if (str[count] == find)

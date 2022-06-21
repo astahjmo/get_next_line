@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astaroth </var/spool/mail/astaroth>        +#+  +:+       +#+        */
+/*   By: johmatos <johmatos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/20 17:51:11 by astaroth          #+#    #+#             */
-/*   Updated: 2022/06/20 17:52:43 by astaroth         ###   ########.fr       */
+/*   Created: 2022/06/20 21:14:16 by johmatos          #+#    #+#             */
+/*   Updated: 2022/06/20 21:14:16 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*shift_left(char *buffer)
 {

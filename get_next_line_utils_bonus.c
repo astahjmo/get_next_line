@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: astaroth </var/spool/mail/astaroth>        +#+  +:+       +#+        */
+/*   By: johmatos <johmatos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/20 17:53:59 by astaroth          #+#    #+#             */
-/*   Updated: 2022/06/20 17:54:03 by astaroth         ###   ########.fr       */
+/*   Created: 2022/06/20 21:14:33 by johmatos          #+#    #+#             */
+/*   Updated: 2022/06/20 21:14:34 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: johmatos < johmatos@student.42sp.org.br    +#+  +:+       +#+        */
+/*   By: johmatos <johmatos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/30 21:06:47 by johmatos          #+#    #+#             */
-/*   Updated: 2022/06/20 17:53:32 by astaroth         ###   ########.fr       */
+/*   Created: 2022/06/20 21:14:27 by johmatos          #+#    #+#             */
+/*   Updated: 2022/06/20 21:22:08 by johmatos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_new_buffer(char *s1, char *s2)
 	str_size = ft_strlen(s1) + ft_strlen(s2);
 	if (!s1 && !s2)
 		return (NULL);
-	new_str = ft_alloc(str_size + 1, sizeof(char));
+	new_str = malloc(str_size + 1 * sizeof(char));
 	while (s1 && s1[count])
 	{
 		new_str[count] = s1[count];
